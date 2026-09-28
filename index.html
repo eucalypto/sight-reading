@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cello sight reading</title>
+<script>
+  try { var t = localStorage.getItem("cello-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -122,6 +125,7 @@
       <button type="button" data-clef="bass" aria-pressed="true">Bass</button>
       <button type="button" data-clef="treble" aria-pressed="false">Treble</button>
     </div>
+    <button type="button" class="ghost" id="themeBtn"></button>
     <button type="button" class="ghost" id="openSettings">Settings</button>
   </div>
 </header>
@@ -454,6 +458,28 @@
     if (!settings.showName) hideName();
     closeSettings();
   });
+
+  // ---------- theme ----------
+  const themeBtn = document.getElementById("themeBtn");
+  const darkQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function currentTheme() {
+    const t = document.documentElement.getAttribute("data-theme");
+    if (t === "light" || t === "dark") return t;
+    return darkQuery && darkQuery.matches ? "dark" : "light";
+  }
+  function syncThemeButton() {
+    const dark = currentTheme() === "dark";
+    themeBtn.textContent = dark ? "☀ Light mode" : "☾ Dark mode";
+    themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
+  themeBtn.addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("cello-theme", next); } catch (e) {}
+    syncThemeButton();
+  });
+  if (darkQuery && darkQuery.addEventListener) darkQuery.addEventListener("change", syncThemeButton);
+  syncThemeButton();
 
   // ---------- start ----------
   syncClefButtons();
