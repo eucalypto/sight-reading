@@ -111,6 +111,10 @@
   .dlg-foot .primary { padding: 9px 22px; min-width: 0; }
   .dlg-foot .ghost { padding: 9px 20px; }
 
+  footer { text-align: center; padding: 12px 20px 18px; font-size: 0.85rem; color: var(--muted); }
+  footer a { color: var(--muted); text-underline-offset: 3px; }
+  footer a:hover { color: var(--accent); }
+
   @media (prefers-reduced-motion: reduce) { .name { transition: none; } }
 </style>
 </head>
@@ -139,6 +143,10 @@
   </div>
   <p class="hint"><kbd>Space</kbd> starts or pauses, <kbd>→</kbd> skips to the next note. Tap the staff to show the name early.</p>
 </main>
+
+<footer>
+  <a href="https://github.com/eucalypto/sight-reading" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
+</footer>
 
 <dialog id="settings">
   <form method="dialog" id="settingsForm">
